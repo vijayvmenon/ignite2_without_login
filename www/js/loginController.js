@@ -60,7 +60,22 @@ $scope.createUser=  function(newuser) {
 
 
     $scope.login = function(currUser,userRole) {
-$ionicAuth.login('basic',currUser).then(function() {
+        
+        LoginService.loginUser(currUser.email, currUser.password).success(function(data) {
+          if(userRole == 'Manager') {
+            $state.go('managerApp');
+          };
+         if(userRole == 'Supervisor') {
+            $state.go('suprvsrApp');
+          }
+        }).error(function(data) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Login failed!',
+                template: 'Please check your credentials!'
+            });
+        });
+        
+/**$ionicAuth.login('basic',currUser).then(function() {
   console.log('user logged in');
       if(userRole == 'Manager') {
             $state.go('managerApp');
@@ -90,24 +105,10 @@ $ionicAuth.login('basic',currUser).then(function() {
                 title: 'Login failed!',
                 template: 'Please check your credentials!'
             });
-});
-    /**
-        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
-          if($scope.data.username == 'manager') {
-            $state.go('managerApp');
-          };
-         if($scope.data.username == 'suprvsr') {
-            $state.go('suprvsrApp');
-          }
-        }).error(function(data) {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Login failed!',
-                template: 'Please check your credentials!'
-            });
-        });
-        **/
+}); **/
 
-    }
+
+}
 
 
 $scope.sendEmail = function(email) {
